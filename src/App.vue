@@ -2,22 +2,27 @@
   <v-app>
     <v-main>
       <v-container fluid>
-        <InstructionsTest />
+        <!-- <InstructionsTest /> -->
+        <div>
+          <Navigate />
+          <router-view />
+        </div>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import InstructionsTest from './components/InstructionsTest.vue';
+// import InstructionsTest from './components/InstructionsTest.vue';
+
+import Navigate from "./components/Navigate.vue";
 
 export default {
-  name: 'App',
-
+  name: "App",
   components: {
-    InstructionsTest,
+    // InstructionsTest,
+
+    Navigate,
   },
-
-
 };
 </script>
