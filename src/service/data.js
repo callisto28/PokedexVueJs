@@ -4,7 +4,7 @@ import { pokeapi } from "../api/pokeApi";
 class getData {
   getPokemon() {
     return new Promise((resolve) => {
-      axios.get(`${pokeapi}`).then((response) => {
+      axios.get(`${pokeapi}?limit=101&offset=20`).then((response) => {
         resolve(response.data);
       });
     });

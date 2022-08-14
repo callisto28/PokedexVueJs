@@ -1,8 +1,13 @@
 <template>
   <div class="d-flex justify-center">
-    <nav>
-        <router-link to="/">Home</router-link> |
-        <router-link to="/favoris">Favoris</router-link> 
+    <nav class="d-flex">
+        <router-link to="/">
+          <h2 class="title">Home</h2>
+          </router-link>
+           <span class="mx-2 color"> | </span>
+        <router-link to="/favoris">
+          <h2 class="title">Favoris</h2>
+          </router-link> 
     </nav>    
        
   </div>
@@ -17,5 +22,10 @@ export default {
 </script>
 
 <style>
-
+.color {
+    color: rgb(243, 247, 12);
+}
+.title {
+    color: rgb(44, 196, 238);
+}
 </style>

@@ -1,42 +1,11 @@
-
 <template>
   <div class="container">
-    <div class="d-flex justify-center align-center">
-      <h3>Rechercher un Pokemon : </h3>
-    <input type="search" v-model="search" placeholder="Rechercher ..." id="search" autocomplete="off" />
-    <span v-if="search && filteredPokemon.length >= 1">
-  {{ filteredPokemon.length }} résultat<span v-if="filteredPokemon.length >=2">s</span>
-    </span>
-    </div>
-    
-     <div class="d-flex justify-center align-center"> 
-      
-              <h3>
-               Afficher par :
-              </h3>
-      <router-link class="favoris" to="/fivePokemon">
-        <Pagination :page5="5" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/tenPokemon">
-        <Pagination :page10="10" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/fiftypokemon">
-        <Pagination :page15="15" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/twelvePokemon">
-        <Pagination :page20="20" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/">
-        <Pagination :pageAll="100" class="p-2" />
-      </router-link>
-    </div>
-    
     <router-link :to="`/details/${pokemonId}`">
-      <div class="list ">
+      <div class="list">
         <article
-          v-for="pokemon in filteredPokemon"
+          v-for="pokemon in listPokemon"
           :key="pokemon.name"
-          @click="setPokemonId(pokemon.id)" class="rounded-lg shadow-lg rounded-bl-0"
+          @click="setPokemonId(pokemon.id)"
         >        
           <img
             :src="imgPokemonUrl + pokemon.id + '.png'"
@@ -45,11 +14,7 @@
             alt=""
           />
           <h3>{{ pokemon.name }}</h3>
-          
         </article>
-        <div v-if="filteredPokemon.length == []" class="no-result">
-          <h3>Désolé aucun résultat</h3>
-        </div>
       </div>
     </router-link>
    
@@ -60,11 +25,10 @@
 <script lang="js">
 // import getData from "../service/data"
 import getDataId from "../service/data";
-import Pagination from "@/components/Pagination.vue";
 
 
 export default {
-    name: "HomeView",
+    name: "tenPokemon",
     mounted() {
       this.getPokemonInPage(1);
 
@@ -93,53 +57,27 @@ export default {
             this.pokemon = data.results;
             this.listPokemon.push(this.pokemon[i]);
             this.pokemons(this.listPokemon);
-            console.log(this.listPokemon, 'listPokemon');
-                  });
-                
-               }
-            
-           }
-            
+                  });                
+               }            
+           }            
         },
     
     data() {
         return {
-             search: "",
             listPokemon: [],
             pokemonId: null,
             imgPokemonUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
-            pokemonsInPage5: 100,            
+            pokemonsInPage5: 10,            
             page5: 1,
            
         };
     },
-    components: {
-        Pagination,
-    },
-    computed: {
-        filteredPokemon() {
-            return this.listPokemon.filter(pokemon => {
-                return pokemon.name.toLowerCase().includes(this.search.toLowerCase());
-            });
-        }
-    }
     
 };
 
 </script>
 
 <style lang="scss" scoped>
-
-#search {
-  text-align: center;
-  width: 200px;
-  height: 30px;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid rgb(13, 13, 13);
-  margin-right: 5px;
- 
-}
 .container {
   display: flex;
   justify-content: center;
@@ -159,10 +97,10 @@ export default {
   width: 100%;
   max-width: 920px;
   :hover{
-   background: black;
-   color: white;
+    background: black;
+    transition-delay: 200ms;
 
-    
+    ;
   }
 }
 article {
@@ -178,7 +116,6 @@ article {
 h3 {
   font-size: 1.2rem; 
   margin: 0;
-  padding: 0 5px 5px 5px;
 }
 #scroll-trigger {
   display: flex;
