@@ -44,7 +44,15 @@
             {{ value.ability.name }}
           </div>
           <div class="like-container">
-            <input type="checkbox" name="checkbox" v-bind:id="pokemon.id" to ="/favoris" :value="pokemon.id" v-model="favorisPokemon" />
+            <input
+              type="checkbox"
+              name="checkbox"
+              v-bind:id="pokemon.id"
+              to="/favoris"
+              :value="pokemon.id"
+              v-model="favorisPokemon"
+              @click="setLikesPokemon()"
+            />
             <label v-bind:for="pokemon.id">
               <i class="fas fa-heart"></i>
             </label>
@@ -52,20 +60,21 @@
         </div>
       </div>
       <div class="d-flex">
-      <router-link class="close" to="/"> Retour à la liste</router-link>
-      <router-link class="favoris" to="/favoris">Voir les Favoris</router-link>
+        <router-link class="close" to="/"> Retour à la liste</router-link>
+        <router-link class="favoris" to="/favoris"
+          >Voir les Favoris</router-link
+        >
       </div>
-      
     </div>
-   
   </div>
-  
 </template>
 
 <!--   -->
 
 <script lang="js">
 import getDataId from "../service/data"
+
+
 
 export default { 
   name:"detailsView",  
@@ -75,7 +84,10 @@ export default {
     await getDataId.getPokemonId( pokemonId).then(data => {       
          this.pokemon = data;            
       })
+      
+
   },
+  
   data (){
     return {
       imageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
@@ -87,9 +99,16 @@ export default {
     closeDetail() {
         this.$emit('closeDetail');
       },
-      
-    
+      setLikesPokemon(){        
+       this.$cookies.set('favorisPokemon', this.favorisPokemon, "1d");
+  console.log(this.favorisPokemon);       
+      }
   }, 
+  computed:{
+    getLikePokemon(){
+      return this.$cookies.get('favorisPokemon');
+    }
+  }
  
 
 }
@@ -191,7 +210,7 @@ i.fa-spinner {
 }
 .detail {
   display: flex;
-  
+
   justify-content: center;
   align-items: flex-start;
   position: absolute;
@@ -301,7 +320,7 @@ h3 {
 }
 
 .favoris,
-.close {  
+.close {
   outline: none;
   border: none;
   border-radius: 5px;
@@ -312,7 +331,6 @@ h3 {
   margin-bottom: 20px;
   font-size: 1.2rem;
   cursor: pointer;
- 
 }
 i {
   font-size: 2rem;

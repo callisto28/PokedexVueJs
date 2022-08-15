@@ -7,23 +7,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        allPokemon: [],
-        // pokemon: {},
-    },
+        allPokemon: [],  
+    },     
     getters: {
-        allPokemon: state => {state.allPokemon},
-        // pokemon: state => id => state.allPokemon.find(pokemon => pokemon.id === id),
+        allPokemon: state => {state.allPokemon},        
     },
     mutations: {
         setAllPokemon(state, allPokemon) {
             state.allPokemon = allPokemon
-        },
-        // setPokemon(state, data) {
-        //     state.pokemon = data
-        // }
-
-    },
-    
+        },        
+    },    
     actions: {
          getAllPokemon({ commit }) {
             axios.get(`${pokeapi}?limit=200&offset=20`)
@@ -34,23 +27,13 @@ export default new Vuex.Store({
                 })
                 .catch(error => {
                     console.log(error)
-                })
-            
-        },
-        // async getPokemon({ commit }, id) {
-        //     try {
-        //         const { data } = await axios.get(pokeapi.pokemon + id)
-        //         commit('setPokemon', data)
-        //         console.log(data)
-        //     }
-        //     catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-    },
+                })            
+            }
+    }
+})
    
     
-})
+
 
 
         

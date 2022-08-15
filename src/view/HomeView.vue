@@ -1,79 +1,85 @@
 
 <template>
-  <div class="container">
+  <div class="container" width="100%">
     <div class="d-flex justify-center align-center">
-      <h3>Rechercher un Pokemon : </h3>
-    <input type="search" v-model="search" placeholder="Rechercher ..." id="search" autocomplete="off" />
-    <span v-if="search && filteredPokemon.length >= 1">
-  {{ filteredPokemon.length }} résultat<span v-if="filteredPokemon.length >=2">s</span>
-    </span>
+      <h3>Rechercher un Pokemon :</h3>
+      <input
+        type="search"
+        v-model="search"
+        placeholder="Rechercher ..."
+        id="search"
+        autocomplete="off"
+      />
+      <span v-if="search && filteredPokemon.length >= 1">
+        {{ filteredPokemon.length }} résultat<span
+          v-if="filteredPokemon.length >= 2"
+          >s</span
+        >
+      </span>
     </div>
-    
-     <div class="d-flex justify-center align-center"> 
-      
-              <h3>
-               Afficher par :
-              </h3>
-      <router-link class="favoris" to="/fivePokemon">
-        <Pagination :page5="5" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/tenPokemon">
-        <Pagination :page10="10" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/fiftypokemon">
-        <Pagination :page15="15" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/twelvePokemon">
-        <Pagination :page20="20" class="p-2" />
-      </router-link>
-      <router-link class="favoris" to="/">
-        <Pagination :pageAll="100" class="p-2" />
-      </router-link>
+
+    <div class="d-flex justify-center align-center">
+      <h3>Afficher par :</h3>
+
+      <button class="round-ball orange" @click="setPokemonPage()">5</button>
+      <button class="round-ball orange" @click="setPokemonPage10()">10</button>
+      <button class="round-ball orange" @click="setPokemonPage15()">15</button>
+      <button class="round-ball orange" @click="setPokemonPage20()">20</button>
+      <button class="round-ball orange" @click="setPokemonPageAll()">
+        All
+      </button>
     </div>
-    
+
     <router-link :to="`/details/${pokemonId}`">
-      <div class="list ">
-        <article
+      <div class="list">
+        <v-card
+          class="
+            rounded-lg
+            shadow-lg
+            rounded-bl-0
+            d-flex
+            flex-column
+            justify-center
+            align-center
+          "
           v-for="pokemon in filteredPokemon"
           :key="pokemon.name"
-          @click="setPokemonId(pokemon.id)" class="rounded-lg shadow-lg rounded-bl-0"
-        >        
+          @click="setPokemonId(pokemon.id)"
+        >
           <img
             :src="imgPokemonUrl + pokemon.id + '.png'"
             width="120"
             height="120"
-            alt=""
+            alt="pokemon.name"
           />
-          <h3>{{ pokemon.name }}</h3>
-          
-        </article>
+          <v-card-title>{{ pokemon.name }}</v-card-title>
+        </v-card>
+
         <div v-if="filteredPokemon.length == []" class="no-result">
           <h3>Désolé aucun résultat</h3>
         </div>
       </div>
     </router-link>
-   
   </div>
 </template>
 
 
 <script lang="js">
-// import getData from "../service/data"
+
 import getDataId from "../service/data";
-import Pagination from "@/components/Pagination.vue";
 
-
-export default {
+export default {  
     name: "HomeView",
     mounted() {
-      this.getPokemonInPage(1);
+      // this.getPokemonInPage(5);
 
-        // getDataId.getPokemon().then(data => {
-        //     this.pokemon = data.results;
-        //     this.pokemons(this.pokemon);
-        // });
+        getDataId.getPokemon().then(data => {
+            this.pokemon = data.results;
+            this.pokemons(this.pokemon);
+        });
     },
     methods: {
+      
         pokemons(pokemons) {
             this.listPokemon = pokemons.map(pokemon => {
                 return {
@@ -85,36 +91,50 @@ export default {
         },
         setPokemonId(id) {
             this.pokemonId = id;
-            console.log(this.pokemonId);
+            
         },
-        getPokemonInPage(){
-           for(let i =  this.page5; i <= this.page5 * this.pokemonsInPage5; i++){
-              getDataId.getPokemon(i).then(data => {
-            this.pokemon = data.results;
-            this.listPokemon.push(this.pokemon[i]);
-            this.pokemons(this.listPokemon);
-            console.log(this.listPokemon, 'listPokemon');
-                  });
-                
-               }
-            
-           }
-            
+        setPokemonPage() {
+          this.listPokemon = this.pokemon.slice(0, this.pokemonsInPage5);
+          this.pokemons(this.listPokemon);
+           
+        },
+        setPokemonPage10() {
+          this.listPokemon = this.pokemon.slice(0, this.page10);
+           this.pokemons(this.listPokemon);
+           
+        },
+        setPokemonPage15() {
+          this.listPokemon = this.pokemon.slice(0, this.page15);
+           this.pokemons(this.listPokemon);
+           
+        },
+        setPokemonPage20() {
+           this.listPokemon = this.pokemon.slice(0, this.page20);
+           this.pokemons(this.listPokemon);
+        },
+        setPokemonPageAll() {           
+            this.listPokemon = this.pokemon.slice(0, this.pageAll);
+           this.pokemons(this.listPokemon);
+        },   
         },
     
     data() {
         return {
-             search: "",
+            search: "",
             listPokemon: [],
             pokemonId: null,
             imgPokemonUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
-            pokemonsInPage5: 100,            
-            page5: 1,
+            pokemonsInPage5: 5,            
+            page5: 5,
+            page10: 10,
+            page15: 15,
+            page20: 20,
+            pageAll: 50,        
            
         };
     },
     components: {
-        Pagination,
+        
     },
     computed: {
         filteredPokemon() {
@@ -129,7 +149,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 #search {
   text-align: center;
   width: 200px;
@@ -138,7 +157,6 @@ export default {
   border-radius: 5px;
   border: 1px solid rgb(13, 13, 13);
   margin-right: 5px;
- 
 }
 .container {
   display: flex;
@@ -157,18 +175,16 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 10px;
   width: 100%;
-  max-width: 920px;
-  :hover{
-   background: black;
-   color: white;
-
-    
+  max-width: 1020px;
+  :hover {
+    background: black;
+    color: white;
   }
 }
 article {
   height: 190px;
   background-color: #efefef;
-  text-align: center;  
+  text-align: center;
   text-transform: capitalize;
   border-radius: 5px;
   cursor: pointer;
@@ -176,7 +192,7 @@ article {
     0 10px 10px rgba(239, 19, 19, 0.2);
 }
 h3 {
-  font-size: 1.2rem; 
+  font-size: 1.2rem;
   margin: 0;
   padding: 0 5px 5px 5px;
 }
@@ -188,5 +204,18 @@ h3 {
   height: 150px;
   font-size: 2rem;
   color: #efefef;
+}
+.round-ball {
+  margin: 5px 10px 10px 0;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  font-weight: 700;
+  border-radius: 100%;
+  color: rgb(245, 234, 234);
 }
 </style>
