@@ -2,7 +2,7 @@
   <div class="detail" width="100%">
     <div class="detail-view card">
       <div v-if="pokemon" class="image">
-        <v-img
+        <img
           :src="imageUrl + pokemon.id + '.png'"
           alt="pokemon.name"
           width="250"
@@ -49,12 +49,14 @@
               name="checkbox"
               v-bind:id="pokemon.id"
               to="/favoris"
-              :value="pokemon.id"
+              :value="pokemon.id"             
               v-model="favorisPokemon"
-              @click="setLikesPokemon()"
+              
+             
             />
-            <label v-bind:for="pokemon.id">
-              <i class="fas fa-heart"></i>
+            <!-- <label v-bind:for="pokemon.id" v-on:click="addToFavoris(pokemon)" > -->
+            <label  v-on:click="addToFavoris(pokemon)" >
+              <i class="fas fa-heart" ></i>
             </label>
           </div>
         </div>
@@ -64,7 +66,7 @@
         <router-link class="favoris" to="/favoris"
           >Voir les Favoris</router-link
         >
-      </div>
+        </div>
     </div>
   </div>
 </template>
@@ -79,35 +81,52 @@ import getDataId from "../service/data"
 export default { 
   name:"detailsView",  
 
- async mounted() {
+  async mounted() {
     const pokemonId = this.$route.params.id;   
-    await getDataId.getPokemonId( pokemonId).then(data => {       
-         this.pokemon = data;            
+     await getDataId.getPokemonId( pokemonId).then(data => {       
+         this.pokemon = data; 
+         console.log(this.pokemon);          
       })
-      
-
+      if (localStorage.favorisPokemon){
+        this.favorisPokemon = JSON.parse(localStorage.favorisPokemon);
+      }
+  },
+  watch:{
+    favorisPokemon(newValue){
+      localStorage.favorisPokemon = JSON.stringify(newValue);
+    }
   },
   
-  data (){
+   data (){
     return {
-      imageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
+      imageUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       pokemon: [], 
       favorisPokemon: [],    
     }
   },
+
   methods : {
     closeDetail() {
         this.$emit('closeDetail');
       },
-      setLikesPokemon(){        
-       this.$cookies.set('favorisPokemon', this.favorisPokemon, "1d");
-  console.log(this.favorisPokemon);       
-      }
+      
+      addToFavoris(pokemon){        
+        this.favorisPokemon.push({
+          id: pokemon.id,
+          name: pokemon.name,
+          Experience: pokemon.base_experience,
+          height: pokemon.height,
+          weight: pokemon.weight,
+          types: pokemon.types,
+          abilities: pokemon.abilities,          
+          imageUrl: this.imageUrl + pokemon.id + '.png'
+        });   
+        
+      },
+     
   }, 
   computed:{
-    getLikePokemon(){
-      return this.$cookies.get('favorisPokemon');
-    }
+   
   }
  
 
@@ -115,6 +134,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .like-container {
   padding-top: 12px;
   input {
@@ -142,12 +162,12 @@ export default {
   }
 }
 
-.fa-heart:hover {
-  color: rgba(251, 38, 38, 0.5);
-}
-i:hover {
-  color: rgba(106, 104, 104, 0.65);
-}
+// .fa-heart:hover {
+//   color: rgba(251, 38, 38, 0.5);
+// }
+// i:hover {
+//   color: rgba(74, 72, 72, 0.65);
+// }
 .type {
   .grass {
     background: rgb(3, 139, 44) !important;
@@ -210,15 +230,12 @@ i.fa-spinner {
 }
 .detail {
   display: flex;
-
   justify-content: center;
   align-items: flex-start;
   position: absolute;
   top: 0;
   left: 0;
-  padding: 90px 10px 10px;
-  //width: calc(100% - 20px);
-  // height: calc(100vh - 20px);
+  padding: 90px 10px 10px; 
   width: 100%;
   height: 100vh;
   background: rgba(10, 7, 0, 0.562);
@@ -231,10 +248,8 @@ i.fa-spinner {
   width: 90%;
   padding: 50px 0 0;
   position: relative;
-
   max-width: 510px;
-
-  background-color: #fff;
+  background-color: rgba(246, 238, 238, 0.951);
   border-radius: 5px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
@@ -244,9 +259,9 @@ i.fa-spinner {
   align-items: center;
   position: absolute;
   top: -60px;
-  width: 120px;
-  height: 120px;
-  background-color: #ffcb04;
+  width: 130px;
+  height: 130px;
+  background-color: #f6c70d;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
@@ -324,7 +339,8 @@ h3 {
   outline: none;
   border: none;
   border-radius: 5px;
-  background-color: #c73015;
+  background-color: #490eed;
+ text-decoration: none;
   color: #efefef;
   padding: 9px;
   margin-left: 15px;
@@ -332,6 +348,8 @@ h3 {
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+
 i {
   font-size: 2rem;
   color: #efefef;

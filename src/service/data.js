@@ -13,7 +13,7 @@ class getData {
     return new Promise((resolve) => {
       axios.get(`${pokeapi}${id}`).then((response) => {
         resolve(response.data);
-        console.log(response.data);
+       
       });
     });
   }

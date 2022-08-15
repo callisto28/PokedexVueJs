@@ -1,38 +1,64 @@
 <template>
-  <v-container grid-list-md fluid>
-    <v-layout wrap>
-      <v-flex xs6 sm4 md2 v-for="pokemon in favorisPokemon" :key="pokemon">
-        <v-card class="dog-card">
-          <v-card-title primary-title class="d-flex justify-center">
-            Vos Pokémon Favoris
-          </v-card-title>
-          <v-img height="150px" :src="pokemon"></v-img>
-          <v-card-actions>
-            <v-spacer> </v-spacer>
-            <v-btn icon>
-              <v-icon>delete</v-icon>
-            </v-btn>
-          </v-card-actions>
-          <router-link class="nes-btn" to="/"> Retour à l'accueil</router-link>
+  <div class="d-flex flex-column justify-center align-center mt-5">
+    <h1 primary-title class="d-flex justify-center">
+ Mes Favoris
+    </h1>
+   
+     <div class="list">
+        <v-card
+          class="
+            rounded-lg
+            shadow-lg
+            rounded-bl-0
+            d-flex
+            flex-column
+            justify-center
+            align-center
+            card-pokemon
+          "
+         v-for="favoris in favorisPokemon" :key="favoris.id"
+          @click="setPokemonId(pokemon.id)"
+        >
+           <img :src="imageUrl + favoris.id + '.png'" width="180" height="180" alt="pokemon.name" />
+          <h2 class="name">{{ favoris.name }}</h2>
+         <div class="property">
+          <div class="left destaq">Taille</div>
+          <div class="right">{{ favoris.height / 10 }} m</div>
+        </div>
+          <div class="property">
+          <div class="left destaq">Poids</div>
+          <div class="right">{{ favoris.weight / 10 }} kg</div>
+        </div>
+           <div class="property">
+          <div class="left destaq">Base Experience</div>
+          <div class="right">{{ favoris.Experience}} XP</div>
+        </div>
+          
+          
         </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+
+      
+      </div>
+     
+      <router-link class="nes-btn" to="/"> Retour à l'accueil</router-link>    
+    
+  </div>
 </template>
 
 <script lang="js">
-import getDataId from "../service/data"
 
-
+// import getDataId from "../service/data"
 export default { 
   name:"detailsView",  
-
- async mounted() {
-    const pokemonId = this.$route.params.id;   
-    await getDataId.getPokemonId( pokemonId).then(data => {       
-         this.pokemon = data;            
-      })
+  mounted() {
+    if (localStorage.getItem("favorisPokemon") !== null) {
+      this.favorisPokemon = JSON.parse(localStorage.getItem("favorisPokemon"));
+      console.log(this.favorisPokemon, 'favoris');
+    }
+   
+      
   },
+
   data (){
     return {
       imageUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
@@ -47,9 +73,35 @@ export default {
     
   }, 
   
-
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+h2 {
+  text-transform: capitalize;
+  padding-top: 5%;
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-gap: 10px;
+  width: 100%;
+  max-width: 1020px;
+   :hover {
+    background: rgb(13, 13, 13);
+    color: white;
+  }
+}
+.property {
+  width: 90%;
+  max-width: 400px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
 </style>

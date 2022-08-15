@@ -22,7 +22,7 @@ export default new Vuex.Store({
             axios.get(`${pokeapi}?limit=200&offset=20`)
                 .then(response => response.data)
                 .then(allPokemon => {
-                    console.log(allPokemon);
+                   
                 commit('setAllPokemon', allPokemon)
                 })
                 .catch(error => {

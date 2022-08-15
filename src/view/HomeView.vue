@@ -30,7 +30,7 @@
       </button>
     </div>
 
-    <router-link :to="`/details/${pokemonId}`">
+    <router-link :to="`/details/${pokemonId}`" class="router">
       <div class="list">
         <v-card
           class="
@@ -41,6 +41,7 @@
             flex-column
             justify-center
             align-center
+            card-pokemon
           "
           v-for="pokemon in filteredPokemon"
           :key="pokemon.name"
@@ -52,7 +53,8 @@
             height="120"
             alt="pokemon.name"
           />
-          <v-card-title>{{ pokemon.name }}</v-card-title>
+          <v-card-title class="name">{{ pokemon.name }}</v-card-title>
+          
         </v-card>
 
         <div v-if="filteredPokemon.length == []" class="no-result">
@@ -70,10 +72,8 @@ import getDataId from "../service/data";
 
 export default {  
     name: "HomeView",
-    mounted() {
-      // this.getPokemonInPage(5);
-
-        getDataId.getPokemon().then(data => {
+    mounted() {      
+         getDataId.getPokemon().then(data => {
             this.pokemon = data.results;
             this.pokemons(this.pokemon);
         });
@@ -122,6 +122,7 @@ export default {
         return {
             search: "",
             listPokemon: [],
+            pokemon: [],
             pokemonId: null,
             imgPokemonUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
             pokemonsInPage5: 5,            
@@ -158,6 +159,10 @@ export default {
   border: 1px solid rgb(13, 13, 13);
   margin-right: 5px;
 }
+.router{
+  text-decoration: none;
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -169,6 +174,8 @@ export default {
   font-family: "Acme", arial;
   font-size: 1rem;
   font-weight: normal;
+ 
+  
 }
 .list {
   display: grid;
@@ -176,8 +183,8 @@ export default {
   grid-gap: 10px;
   width: 100%;
   max-width: 1020px;
-  :hover {
-    background: black;
+   :hover {
+    background: rgb(13, 13, 13);
     color: white;
   }
 }
@@ -192,7 +199,7 @@ article {
     0 10px 10px rgba(239, 19, 19, 0.2);
 }
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.12rem;
   margin: 0;
   padding: 0 5px 5px 5px;
 }
@@ -218,4 +225,63 @@ h3 {
   border-radius: 100%;
   color: rgb(245, 234, 234);
 }
+
+
+@media screen and (min-width: 350px) and (max-width: 680px) {
+  .container {
+    
+    width: 100%;
+    min-height: auto;
+  }
+   h3{
+    font-size: 0.8rem;
+  }
+  .list {
+    .name{font-size: 0.9rem;}  
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: 1.2fr 1.1fr; 
+  gap: 10px 6px; 
+  grid-template-areas: 
+    ". ."
+    ". ."; 
+  justify-items: stretch; 
+  width: 100%;; 
+  height: auto; 
+  margin: 0 1px 1px 0px;
+  }
+  
+  article {
+    
+    height: 50px;
+    width: 250px;
+  }
+}
+@media screen and (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    width: calc(100% - 20px);
+    min-height: calc(80vh - 20px);
+  }
+  h3{
+    font-size: 1.05rem;
+  }
+  .list {
+     .name{font-size: 0.9rem;}  
+   display: grid; 
+  grid-template-columns: repeat(5, 1fr); 
+  grid-template-rows: 1.2fr 1.1fr; 
+  gap: 10px 6px; 
+  grid-template-areas: 
+    ". ."
+    ". ."; 
+  justify-items: stretch; 
+  width: auto; 
+  height: auto; 
+  }
+  article {
+    height: 50px;
+    width: 250px;
+  }
+}
+
 </style>
