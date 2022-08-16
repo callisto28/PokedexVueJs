@@ -25,6 +25,7 @@
       <button class="round-ball orange" @click="setPokemonPage10()">10</button>
       <button class="round-ball orange" @click="setPokemonPage15()">15</button>
       <button class="round-ball orange" @click="setPokemonPage20()">20</button>
+      <button class="round-ball orange" @click="setPokemonPage50()">50</button>
       <button class="round-ball orange" @click="setPokemonPageAll()">
         All
       </button>
@@ -112,6 +113,10 @@ export default {
            this.listPokemon = this.pokemon.slice(0, this.page20);
            this.pokemons(this.listPokemon);
         },
+        setPokemonPage50() {
+           this.listPokemon = this.pokemon.slice(0, this.page50);
+           this.pokemons(this.listPokemon);
+        },
         setPokemonPageAll() {           
             this.listPokemon = this.pokemon.slice(0, this.pageAll);
            this.pokemons(this.listPokemon);
@@ -130,7 +135,8 @@ export default {
             page10: 10,
             page15: 15,
             page20: 20,
-            pageAll: 50,        
+            page50: 50,
+            pageAll: 80,        
            
         };
     },
@@ -215,8 +221,8 @@ h3 {
 .round-ball {
   margin: 5px 10px 10px 0;
   cursor: pointer;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,6 +262,20 @@ h3 {
     height: 50px;
     width: 250px;
   }
+  .round-ball {
+  margin: 2px 8px 8px 0;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  font-weight: 700;
+  border-radius: 100%;
+  color: rgb(245, 234, 234);
+ 
+}
 }
 @media screen and (min-width: 641px) and (max-width: 1024px) {
   .container {

@@ -47,16 +47,15 @@
             <input
               type="checkbox"
               name="checkbox"
-              v-bind:id="pokemon.id"
-              to="/favoris"
+              v-bind:for="pokemon.id"              
               :value="pokemon.id"             
               v-model="favorisPokemon"
               
              
             />
-            <!-- <label v-bind:for="pokemon.id" v-on:click="addToFavoris(pokemon)" > -->
-            <label  v-on:click="addToFavoris(pokemon)" >
-              <i class="fas fa-heart" ></i>
+            <label v-bind:for="pokemon.id" v-on:click="addToFavoris(pokemon)" >
+            
+              <i class="fas fa-heart" id="heart" @click="changeColor()" style="color: yellow;"  ></i>
             </label>
           </div>
         </div>
@@ -123,9 +122,15 @@ export default {
         });   
         
       },
+      changeColor() {
+        document.getElementById("heart").style.color = "red";
+      }
+          
+      
      
   }, 
   computed:{
+    
    
   }
  
@@ -352,7 +357,7 @@ h3 {
 
 i {
   font-size: 2rem;
-  color: #efefef;
+  color: #817878;
 }
 .destaq {
   font-weight: bold;

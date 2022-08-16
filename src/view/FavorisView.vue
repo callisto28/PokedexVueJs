@@ -19,7 +19,7 @@
          v-for="favoris in favorisPokemon" :key="favoris.id"
           @click="setPokemonId(pokemon.id)"
         >
-           <img :src="imageUrl + favoris.id + '.png'" width="180" height="180" alt="pokemon.name" />
+           <img :src="imageUrl + favoris.id + '.png'" width="180" height="180" alt="pokemon.name" class="img" />
           <h2 class="name">{{ favoris.name }}</h2>
          <div class="property">
           <div class="left destaq">Taille</div>
@@ -103,5 +103,18 @@ h2 {
 }
 .right {
   float: right;
+}
+
+@media screen and (min-width: 350px) and (max-width: 680px) {
+ .name{
+    font-size: 1.1rem;
+ }
+ .property{
+    font-size: 0.9rem;
+ }
+ img{
+    width: 100px;
+    height: 100px;
+ }
 }
 </style>
